@@ -17,6 +17,7 @@ import org.apache.logging.log4j.LogManager;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -43,7 +44,6 @@ public class ViaForge {
 
     private File file;
     private ProtocolVersion protocol;
-    private String lastServer;
 
     /**
      * [ProtocolVersion.getProtocols()] will create an unmodifiable list every time called and will cause performance issues.
@@ -60,7 +60,7 @@ public class ViaForge {
         setProtocol(SHARED_PROTOCOL);
         this.file = new File("ViaForge");
         if (this.file.mkdir())
-            this.getjLogger().info("Creating ViaForge Folder");
+            this.getJLogger().info("Creating ViaForge Folder");
 
         Via.init(
                 ViaManagerImpl.builder()
@@ -80,10 +80,10 @@ public class ViaForge {
 
         protocolVersions = new ArrayList<>(ProtocolVersion.getProtocols());
         protocolVersions.remove(ProtocolVersion.unknown); // remove unknown protocol
-        protocolVersions.sort((o1, o2) -> o2.getVersion() - o1.getVersion());
+        protocolVersions.sort(Comparator.comparingInt(ProtocolVersion::getVersion));
     }
 
-    public Logger getjLogger() {
+    public Logger getJLogger() {
         return jLogger;
     }
 
@@ -99,28 +99,12 @@ public class ViaForge {
         return eventLoop;
     }
 
-    public File getFile() {
-        return file;
-    }
-
-    public String getLastServer() {
-        return lastServer;
-    }
-
     public ProtocolVersion getProtocol() {
         return protocol;
     }
 
     public void setProtocol(ProtocolVersion protocolIn) {
         this.protocol = protocolIn;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
-    }
-
-    public void setLastServer(String lastServer) {
-        this.lastServer = lastServer;
     }
 
     public List<ProtocolVersion> getProtocols() {

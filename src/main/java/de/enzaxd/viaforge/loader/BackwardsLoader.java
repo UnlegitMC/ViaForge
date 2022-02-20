@@ -15,7 +15,7 @@ public class BackwardsLoader implements ViaBackwardsPlatform {
 
     @Override
     public Logger getLogger() {
-        return ViaForge.getInstance().getjLogger();
+        return ViaForge.getInstance().getJLogger();
     }
 
     @Override
